@@ -35,7 +35,7 @@ export const Categories: React.FC<Props> = ({ className }) => {
 					href={`/#${cat.name}`}
 					key={index}
 				>
-					<button className="">{cat.name}</button>
+					<button>{cat.name}</button>
 				</a>
 			))}
 		</div>
