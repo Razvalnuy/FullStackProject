@@ -9,7 +9,7 @@ export async function GET() {
 
 export async function POST(req: NextResponse) {
 	const data = await req.json() //? вернет тело с данными
-
+	
 	const user = await prisma.user.create({ data })
 
 	return NextResponse.json(user)
