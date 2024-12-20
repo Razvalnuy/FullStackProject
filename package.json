@@ -8,27 +8,34 @@
 		"start": "next start",
 		"lint": "next lint",
 		"prisma:push": "prisma db push",
-		"prisma/studio": "prisma studio"
+		"prisma/studio": "prisma studio",
+		"prisma:seed": "prisma db seed"
+	},
+	"prisma": {
+		"seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
 	},
 	"dependencies": {
-		"@prisma/client": "^6.0.1",
+		"@prisma/client": "^6.1.0",
 		"@radix-ui/react-checkbox": "^1.1.2",
 		"@radix-ui/react-dialog": "^1.1.2",
 		"@radix-ui/react-popover": "^1.1.2",
 		"@radix-ui/react-select": "^2.1.2",
 		"@radix-ui/react-slider": "^1.2.1",
 		"@radix-ui/react-slot": "^1.1.0",
+		"@types/bcrypt": "^5.0.2",
+		"bcrypt": "^5.1.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"lucide": "^0.468.0",
 		"lucide-react": "^0.468.0",
 		"next": "15.0.4",
-		"prisma": "^6.0.1",
+		"prisma": "^6.1.0",
 		"react": "^19.0.0",
 		"react-dom": "^19.0.0",
 		"react-use": "^17.6.0",
 		"tailwind-merge": "^2.5.5",
 		"tailwindcss-animate": "^1.0.7",
+		"ts-node": "^10.9.2",
 		"vaul": "^1.1.1",
 		"zustand": "^5.0.2"
 	},
