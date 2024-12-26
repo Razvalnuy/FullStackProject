@@ -1,10 +1,12 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { Api } from "@/services/api-client"
+import { Product } from "@prisma/client"
 import { Search } from "lucide-react"
 import Link from "next/link"
 import React, { useRef, useState } from "react"
-import { useClickAway } from "react-use"
+import { useClickAway, useDebounce } from "react-use"
 
 interface Props {
 	className?: string
@@ -12,11 +14,29 @@ interface Props {
 
 export const SearchInput: React.FC<Props> = ({ className }) => {
 	const [focused, setFocused] = useState(false)
+	const [searchQuery, setSearchQuery] = useState<string>("")
+	const [products, setProducts] = useState<Product[]>([])
 	const ref = useRef(null)
 
 	useClickAway(ref, () => {
 		setFocused(false)
 	})
+
+	useDebounce(
+		async () => {
+			const response = await Api.product.search(searchQuery)
+			setProducts(response)
+		},
+		250,
+		[searchQuery]
+	)
+
+	const onClickItem = () => {
+		setFocused(false)
+		setSearchQuery("")
+		setProducts([])
+	}
+
 	return (
 		<>
 			{focused && (
@@ -36,26 +56,34 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 					type="text"
 					placeholder="Найти продукт..."
 					onFocus={() => setFocused(true)}
+					value={searchQuery}
+					onChange={(event) => setSearchQuery(event.target.value)}
 				/>
 
-				<div
-					className={cn(
-						"absolute w-full bg-white rounded-xl py-2 top-14 shadow-md translate-all duration-200 invisible opacity-0 z-30",
-						focused && "visible opacity-100 top-12"
-					)}
-				>
-					<Link
-						href="/product/1"
-						className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10 "
+				{products.length > 0 && (
+					<div
+						className={cn(
+							"absolute w-full bg-white rounded-xl py-2 top-14 shadow-md translate-all duration-200 invisible opacity-0 z-30",
+							focused && "visible opacity-100 top-12"
+						)}
 					>
-						<img
-							className="rounded-sm h-8"
-							src="https://media.dodostatic.net/image/r:292x292/11EF620C4FFE97539ED4F34C6D633459.avif"
-							alt="Развальный тест"
-						/>
-						<div>Развальный Тест</div>
-					</Link>
-				</div>
+						{products.map((product) => (
+							<Link
+								onClick={onClickItem}
+								key={product.id}
+								href={`/product/${product.id}`}
+								className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10 "
+							>
+								<img
+									className="rounded-sm h-8"
+									src={product.imageUrl}
+									alt={product.name}
+								/>
+								<div>{product.name}</div>
+							</Link>
+						))}
+					</div>
+				)}
 			</div>
 		</>
 	)

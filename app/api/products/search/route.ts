@@ -6,11 +6,11 @@ export async function GET(req: NextRequest) {
 	const products = await prisma.product.findMany({
 		where: {
 			name: {
-				contains: query, //? брать отсюда поиск
-				mode: "insensitive", //? нет чувствительности к регистру
+				contains: query,
+				mode: "insensitive",
 			},
 		},
-		take: 5, //? возвращать только 5 продуктов
+		take: 5,
 	})
 
 	return NextResponse.json(products)
