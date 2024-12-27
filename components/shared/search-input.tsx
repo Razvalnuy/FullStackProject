@@ -24,8 +24,12 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
 
 	useDebounce(
 		async () => {
-			const response = await Api.product.search(searchQuery)
-			setProducts(response)
+			try {
+				const response = await Api.products.search(searchQuery)
+				setProducts(response)
+			} catch (err) {
+				console.log(err)
+			}
 		},
 		250,
 		[searchQuery]
